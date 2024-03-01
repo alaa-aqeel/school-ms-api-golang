@@ -8,3 +8,34 @@ services:
       - ./:/app
     ports:
     - 8080:8080
+    depends_on:
+      - postgres-db
+    networks:
+      - pgdb-net
+
+  postgres-db:
+    image: postgres
+    networks:
+      - pgdb-net
+    user: root
+    environment:
+      POSTGRES_USER: db_username
+      POSTGRES_PASSWORD: db_pass
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+
+  migrate:
+      image: migrate/migrate
+      volumes:
+        - ./database/migrations:/migrations
+      command: -database "postgres://db_username:db_pass@database:5432/app_db?sslmode=disable" -path /migrations up
+      depends_on:
+        - postgres-db
+      networks:
+        - pgdb-net
+
+networks:
+  pgdb-net:

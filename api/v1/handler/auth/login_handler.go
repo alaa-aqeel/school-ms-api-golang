@@ -1,5 +1,7 @@
 package auth
 
-func LoginHandler() {
+import "net/http"
+
+func Index(w http.ResponseWriter, r *http.Request) {
 
 }
