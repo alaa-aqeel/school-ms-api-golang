@@ -27,7 +27,7 @@ case "$1" in
             -v "${MIGRATIONS_PATH}":/migrations \
             --network school-ms-api-golang_pgdb-net migrate/migrate \
             -path /migrations \
-            -database postgres://db_username:db_pass@postgres-db:5432/app_db?sslmode=disable up
+            -database postgres://db_username:db_pass@postgres-db:5432/app_db?sslmode=disable up $2
 
         # Check if the up command was successful
         if [ $? -eq 0 ]; then
